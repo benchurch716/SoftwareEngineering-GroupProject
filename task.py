@@ -1,5 +1,5 @@
 # Function 1 Specification - BEN
-# This function must have the following header: def conv_num(num_str). 
+# This function must have the following header: def conv_num(num_str).
 # This function takes in a string and converts it into a base 10 number and returns it. It has the following specifications:
 
 # Must be able to handle strings that represent integers
@@ -7,7 +7,8 @@
 # Must be able handle hexadecimal numbers with the prefix 0x
 # Must be case insensitive
 # Negative numbers are indicated with a - like -0xFF
-# The type returned must match the type sent. For example, if an string of an integer is passed in, conv_num must return an int.
+# The type returned must match the type sent.
+# For example, if an string of an integer is passed in, conv_num must return an int.
 # Invalid formats should return None, including, but not limited to:
 # strings with multiple decimal points
 # strings with alpha that aren't part of a hexadecimal number
@@ -18,8 +19,8 @@ def conv_num(num_str):
 
 
 # Function 2 Specification - TROY
-# This function must have the following header: def my_datetime(num_sec). 
-# This function takes in an integer value that represents the number of seconds since the epoch: January 1st 1970. 
+# This function must have the following header: def my_datetime(num_sec).
+# This function takes in an integer value that represents the number of seconds since the epoch: January 1st 1970.
 # The function takes num_sec and converts it to a date and returns it as a string with the following format: MM-DD-YYYY. 
 
 # It has the following specifications:
@@ -33,9 +34,9 @@ def my_datetime(num_sec):
 
 
 # Function 3 Specification - PAUL
-# This function must have the following header: def conv_endian(num, endian='big'). 
-# This function takes in an integer value as num and converts it to a hexadecimal number. 
-# The endian type is determined by the flag endian. 
+# This function must have the following header: def conv_endian(num, endian='big').
+# This function takes in an integer value as num and converts it to a hexadecimal number.
+# The endian type is determined by the flag endian.
 # The function will return the converted number as a string. It has the following specifications:
 
 # It may be assumed that num will always be an integer
