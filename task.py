@@ -1,5 +1,6 @@
-# Function 1 Specification
-# This function must have the following header: def conv_num(num_str). This function takes in a string and converts it into a base 10 number and returns it. It has the following specifications:
+# Function 1 Specification - BEN
+# This function must have the following header: def conv_num(num_str). 
+# This function takes in a string and converts it into a base 10 number and returns it. It has the following specifications:
 
 # Must be able to handle strings that represent integers
 # Must be able to handle strings that represent floating point numbers
@@ -16,9 +17,12 @@ def conv_num(num_str):
     return
 
 
-# Function 2 Specification
-# This function must have the following header: def my_datetime(num_sec). This function takes in an integer value that represents the number of seconds since the epoch: January 1st 1970. The function takes num_sec and converts it to a date and returns it as a string with the following format: MM-DD-YYYY. It has the following specifications:
+# Function 2 Specification - TROY
+# This function must have the following header: def my_datetime(num_sec). 
+# This function takes in an integer value that represents the number of seconds since the epoch: January 1st 1970. 
+# The function takes num_sec and converts it to a date and returns it as a string with the following format: MM-DD-YYYY. 
 
+# It has the following specifications:
 # It may be assumed that num_sec will always be an int value
 # It may be assumed that num_sec will always be a non-negative value
 # Must be able to handle leap years
@@ -28,8 +32,11 @@ def my_datetime(num_sec):
     return
 
 
-# Function 3 Specification
-# This function must have the following header: def conv_endian(num, endian='big'). This function takes in an integer value as num and converts it to a hexadecimal number. The endian type is determined by the flag endian. The function will return the converted number as a string. It has the following specifications:
+# Function 3 Specification - PAUL
+# This function must have the following header: def conv_endian(num, endian='big'). 
+# This function takes in an integer value as num and converts it to a hexadecimal number. 
+# The endian type is determined by the flag endian. 
+# The function will return the converted number as a string. It has the following specifications:
 
 # It may be assumed that num will always be an integer
 # Must be able to handle negative values for num
