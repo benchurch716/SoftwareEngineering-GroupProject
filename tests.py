@@ -8,31 +8,45 @@ class TestCase(unittest.TestCase):
     def test_empty_string(self):
         self.assertIsNone(conv_num(""))
 
-    # reject a regular int
+    # reject non string
     def test_int(self):
         self.assertIsNone(conv_num(123))
 
+    # test a positive int
     def test_string_int(self):
-        self.assertEqual(conv_num("123"), "i'm an int")
+        self.assertEqual(conv_num("423"), 423)
 
+    # test a negative int
     def test_negative_int(self):
-        self.assertEqual(conv_num("-123"), "i'm an int")
+        self.assertEqual(conv_num("-6478"), -6478)
 
+    # test a positive float
     def test_float(self):
-        self.assertEqual(conv_num("12.345"), "i'm a float")
+        self.assertEqual(conv_num("12.345"), 12.345)
 
+    # test a negative float
     def test_negative_float(self):
-        self.assertEqual(conv_num("-12.345"), "i'm a float")
+        self.assertEqual(conv_num("-67.1245"), -67.1245)
 
     # reject more than 1 decimal points
     def test_multiple_decimal_points(self):
         self.assertIsNone(conv_num("12.1.23"))
 
+    # test a positive hex
     def test_hex(self):
-        self.assertEqual(conv_num("0x1a2"), "i'm a hex")
+        self.assertEqual(conv_num("0xA"), int(0xA))
 
+    # test a positive hex with lower case alpha
+    def test_hex_lowercase(self):
+        self.assertEqual(conv_num("0xb13c"), int(0xb13c))
+
+    # test a negative hex value
     def test_negative_hex(self):
-        self.assertEqual(conv_num("-0x1a2"), "i'm a hex")
+        self.assertEqual(conv_num("-0xF34b2"), int(-0xF34b2))
+
+    # Test a hex number without he "0x"
+    def test_hex_no_prefix(self):
+        self.assertIsNone(conv_num("1a2"))
 
 
 if __name__ == '__main__':
