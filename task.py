@@ -49,6 +49,8 @@ def my_datetime(num_sec):
 
 
 def conv_endian(num, endian='big'):
+    if endian != 'big' and endian != 'little':
+        return None
     bt_vals = []
     bt_str = ''
 
@@ -95,7 +97,7 @@ def conv_endian(num, endian='big'):
 if __name__ == '__main__':
     result = conv_endian(954786, 'big')
     print(result)
-    print(len(result))
-    print(type(result))
+    # print(len(result))
+    # print(type(result))
     print(conv_endian(954786, 'little'))
     print(conv_endian(10742015))
