@@ -81,9 +81,9 @@ def conv_endian(num, endian='big'):
     bt_vals.insert(0, bt_str)  # add final byte to byte list
 
     if endian == 'big':
-        dir = -1
-    else:
         dir = 1
+    else:
+        dir = -1
 
     for bt in bt_vals[::dir]:
         hex_str = hex_str + bt + ' '
