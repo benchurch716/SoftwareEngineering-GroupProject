@@ -51,7 +51,13 @@ def my_datetime(num_sec):
 def conv_endian(num, endian='big'):
     hex_vals = []
     bt_str = ''
-    hex_str = ''
+
+    if num >= 0:
+        hex_str = ''
+    else:
+        hex_str = '-'
+        num = abs(num)
+
     hex_map = [
         '0', '1', '2', '3', '4', '5', '6', '7',
         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
@@ -87,8 +93,9 @@ def conv_endian(num, endian='big'):
 
 
 if __name__ == '__main__':
-    result = conv_endian(954786)
+    result = conv_endian(954786, 'big')
     print(result)
     print(len(result))
+    print(type(result))
     print(conv_endian(954786, 'little'))
     print(conv_endian(10742015))
