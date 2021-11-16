@@ -46,7 +46,15 @@ class TestCase(unittest.TestCase):
 
     # Test a hex number without he "0x"
     def test_hex_no_prefix(self):
-        self.assertIsNone(conv_num("1a2"))
+        self.assertIsNone(conv_num("12345A"))
+
+    # test a invalid hex value
+    def test_invalid_hex(self):
+        self.assertIsNone(conv_num("0xAZ4"))
+
+    # test a decimal with only an integer component
+    def test_int_float(self):
+        self.assertEqual(conv_num('123.'), 123.0)
 
 
 if __name__ == '__main__':
