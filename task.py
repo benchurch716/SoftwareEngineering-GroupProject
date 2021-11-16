@@ -179,4 +179,46 @@ def my_datetime(num_sec):
 
 
 def conv_endian(num, endian='big'):
-    return
+    if endian != 'big' and endian != 'little':
+        return None
+    bt_vals = []
+    bt_str = ''
+
+    if num >= 0:
+        hex_str = ''
+    else:
+        hex_str = '-'
+        num = abs(num)
+
+    hex_map = [
+        '0', '1', '2', '3', '4', '5', '6', '7',
+        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+
+    # extract hex values from num and store in a list of bytes
+    while num > 15:
+        rem = num % 16  # get remainder to map to hex
+        num = num // 16
+        hex = hex_map[rem]
+        bt_str = hex + bt_str
+        if len(bt_str) == 2:
+            bt_vals.insert(0, bt_str)
+            bt_str = ''
+
+    bt_str = hex_map[num] + bt_str  # add remaining hex value to string
+
+    # add 0 padding to a byte with one character
+    if len(bt_str) == 1:
+        bt_str = '0' + bt_str
+
+    bt_vals.insert(0, bt_str)  # add final byte to byte list
+
+    if endian == 'big':
+        dir = 1
+    else:
+        dir = -1
+
+    for bt in bt_vals[::dir]:
+        hex_str = hex_str + bt + ' '
+
+    # return the string without the last character to drop the trailing space
+    return hex_str[:-1]
