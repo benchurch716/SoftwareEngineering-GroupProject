@@ -157,37 +157,37 @@ def conv_num(num_str):
 
 
 def my_datetime(num_sec):
-    monthDays = {
+    months = {
         1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
         7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
     current_month, current_day, current_year = 1, 1, 1970
-    secInDay = 86400
-    totalDays = math.ceil(num_sec/secInDay)
+    seconds_in_day = 86400
+    total_days = math.ceil(num_sec/seconds_in_day)
     leaps = 0
 
-    while totalDays > 0:
+    while total_days > 0:
 
         if current_month == 2 and current_year >= 1972 and leap_check(current_year):
-            monthDays[2] = 29
+            months[2] = 29
             leaps += 1
 
-        if totalDays > monthDays[current_month]:
-            totalDays -= monthDays[current_month]
+        if total_days > months[current_month]:
+            total_days -= months[current_month]
             current_month += 1
 
             if current_month > 12:
                 current_month = 1
                 current_year += 1
-                monthDays[2] = 28
+                months[2] = 28
 
-        elif totalDays + current_day == monthDays[current_month] and current_month == 2:
-            current_day = int(totalDays) + 1
-            totalDays = 0
+        elif total_days + current_day == months[current_month] and current_month == 2:
+            current_day = int(total_days) + 1
+            total_days = 0
 
-        elif totalDays < monthDays[current_month]:
-            current_day = int(totalDays)
-            totalDays = 0
+        elif total_days < months[current_month]:
+            current_day = int(total_days)
+            total_days = 0
 
     if current_month < 10:
         current_month = '0' + str(current_month)
