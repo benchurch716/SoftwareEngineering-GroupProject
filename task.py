@@ -207,6 +207,7 @@ def leap_check(year):
     elif (year - 1972) % 4 == 0:
         return True
 
+
 # Function 3 Specification - PAUL
 # This function must have the following header:
 # def conv_endian(num, endian='big').
