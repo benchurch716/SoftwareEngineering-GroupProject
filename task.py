@@ -187,7 +187,6 @@ def my_datetime(num_sec):
             day = int(total_days)
             total_days = 0
 
-
     if month < 10:
         month = '0' + str(month)
 
