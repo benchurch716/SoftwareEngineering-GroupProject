@@ -196,7 +196,6 @@ def my_datetime(num_sec):
         current_day = '0' + str(current_day)
 
     end_date = str(current_month) + '-' + str(current_day) + '-' + str(current_year)
-    
     return end_date
 
 
