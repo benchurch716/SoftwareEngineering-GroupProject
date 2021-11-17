@@ -194,9 +194,7 @@ def my_datetime(num_sec):
     if day < 10:
         day = '0' + str(day)
 
-    end_date = str(month) + '-' + str(day) + '-' + str(year)
-
-    return end_date
+    return str(month) + '-' + str(day) + '-' + str(year)
 
 
 def leap_check(year):
