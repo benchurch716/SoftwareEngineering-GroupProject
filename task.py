@@ -198,7 +198,6 @@ def my_datetime(num_sec):
     end_date = str(current_month) + '-' + str(current_day) + '-' + str(current_year)
     return end_date
 
-
 def leap_check(year):
     if year % 400 == 0:
         return True
