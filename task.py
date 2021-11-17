@@ -1,4 +1,5 @@
-import string, math
+import string
+import math
 # Function 1 Specification - BEN
 # This function must have the following header: def conv_num(num_str).
 # This function takes in a string and converts it into a base 10 number
