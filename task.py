@@ -1,4 +1,5 @@
 import string
+import math
 # Function 1 Specification - BEN
 # This function must have the following header: def conv_num(num_str).
 # This function takes in a string and converts it into a base 10 number
@@ -156,7 +157,53 @@ def conv_num(num_str):
 
 
 def my_datetime(num_sec):
-    return
+
+    months = {
+        1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+        7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
+    month, day, year = 1, 1, 1970
+    seconds_in_day = 86400
+    total_days = math.ceil(num_sec/seconds_in_day)
+    leaps = 0
+
+    while total_days > 0:
+
+        if month == 2 and year >= 1972 and leap_check(year):
+            months[2] = 29
+            leaps += 1
+        if total_days > months[month]:
+            total_days -= months[month]
+            month += 1
+
+            if month > 12:
+                month = 1
+                year += 1
+                months[2] = 28
+
+        elif total_days + day == months[month] and month == 2:
+            day = int(total_days) + 1
+            total_days = 0
+
+        elif total_days < months[month]:
+            day = int(total_days)
+            total_days = 0
+
+    if month < 10:
+        month = '0' + str(month)
+
+    if day < 10:
+        day = '0' + str(day)
+
+    return str(month) + '-' + str(day) + '-' + str(year)
+
+
+def leap_check(year):
+    if year % 400 == 0:
+        return True
+    elif year % 100 == 0:
+        return False
+    elif (year - 1972) % 4 == 0:
+        return True
 
 
 # Function 3 Specification - PAUL
