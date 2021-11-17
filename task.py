@@ -1,4 +1,5 @@
 import string
+import math
 # Function 1 Specification - BEN
 # This function must have the following header: def conv_num(num_str).
 # This function takes in a string and converts it into a base 10 number
@@ -156,8 +157,56 @@ def conv_num(num_str):
 
 
 def my_datetime(num_sec):
-    return
+    monthDays = {
+        1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+        7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
+    current_month, current_day, current_year = 1, 1, 1970
+    secInDay = 86400
+    totalDays = math.ceil(num_sec/secInDay)
+    leaps = 0
+
+    while totalDays > 0:
+
+        if current_month == 2 and current_year >= 1972 and leap_check(current_year):
+            monthDays[2] = 29
+            leaps += 1
+
+        if totalDays > monthDays[current_month]:
+            totalDays -= monthDays[current_month]
+            current_month += 1
+
+            if current_month > 12:
+                current_month = 1
+                current_year += 1
+                monthDays[2] = 28
+
+        elif totalDays + current_day == monthDays[current_month] and current_month == 2:
+            current_day = int(totalDays) + 1
+            totalDays = 0
+
+        elif totalDays < monthDays[current_month]:
+            current_day = int(totalDays)
+            totalDays = 0
+
+    if current_month < 10:
+        current_month = '0' + str(current_month)
+
+    if current_day < 10:
+        current_day = '0' + str(current_day)
+
+    end_date = str(current_month) + '-' + str(current_day) + '-' + str(current_year)
+    
+    return end_date
+
+
+def leap_check(year):
+    if year % 400 == 0:
+        return True
+    elif year % 100 == 0:
+        return False
+    elif (year - 1972) % 4 == 0:
+        return True
 
 # Function 3 Specification - PAUL
 # This function must have the following header:
