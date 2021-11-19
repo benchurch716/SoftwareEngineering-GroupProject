@@ -1,5 +1,5 @@
 import unittest
-from task import conv_num, conv_endian
+from task import conv_num, my_datetime, conv_endian
 
 
 class TestCase(unittest.TestCase):
@@ -46,7 +46,15 @@ class TestCase(unittest.TestCase):
 
     # Test a hex number without he "0x"
     def test_hex_no_prefix(self):
-        self.assertIsNone(conv_num("1a2"))
+        self.assertIsNone(conv_num("12345A"))
+
+    # test a invalid hex value
+    def test_invalid_hex(self):
+        self.assertIsNone(conv_num("0xAZ4"))
+
+    # test a decimal with only an integer component
+    def test_int_float(self):
+        self.assertEqual(conv_num('123.'), 123.0)
 
     def test_conv_endian1(self):
         self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
@@ -69,6 +77,18 @@ class TestCase(unittest.TestCase):
 
     def test_conv_endian7(self):
         self.assertEqual(conv_endian(num=-954786, endian='small'), None)
+
+    def test_zero(self):
+        self.assertEqual(my_datetime(0), '01-01-1970')
+
+    def test_example1(self):
+        self.assertEqual(my_datetime(123456789), '11-29-1973')
+
+    def test_example2(self):
+        self.assertEqual(my_datetime(9876543210), '12-22-2282')
+
+    def test_example3(self):
+        self.assertEqual(my_datetime(201653971200), '02-29-8360')
 
 
 if __name__ == '__main__':
