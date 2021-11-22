@@ -90,6 +90,12 @@ class TestCase(unittest.TestCase):
     def test_example3(self):
         self.assertEqual(my_datetime(201653971200), '02-29-8360')
 
+    def datetime_4(self):
+        self.assertEqual(my_datetime(10427097600 ), '06-04-2300')
+
+    def my_datetime5(self):
+        self.assertEqual(my_datetime(0), '0')
+
 
 if __name__ == '__main__':
     unittest.main()
