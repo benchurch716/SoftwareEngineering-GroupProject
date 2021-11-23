@@ -161,25 +161,20 @@ def my_datetime(num_sec):
         1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
         7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
     month, day, year = 1, 1, 1970
-    seconds_in_day = 86400
-    seconds_in_year = 86400*365
-    seconds_in_leap_year = 86400 * 366
+    SECONDS_IN_DAY = 86400
+    SECONDS_IN_YEAR = SECONDS_IN_DAY*365
+    SECONDS_IN_LEAP_YEAR = SECONDS_IN_DAY * 366
 
-    month, day, year = 1, 1, 1970
-    seconds_in_day = 86400
-    seconds_in_year = 86400*365
-    seconds_in_leap_year = 86400 * 366
-
-    while num_sec > seconds_in_year:
-        num_sec -= seconds_in_year
+    while num_sec > SECONDS_IN_YEAR:
+        num_sec -= SECONDS_IN_YEAR
         year += 1
         if year >= 1972 and leap_check(year):
-            seconds_in_year = seconds_in_leap_year
+            SECONDS_IN_YEAR = SECONDS_IN_LEAP_YEAR
         else:
-            seconds_in_year = 86400*365
+            SECONDS_IN_YEAR = SECONDS_IN_DAY*365
 
-    while num_sec > months[month] * 86400:
-        num_sec -= months[month] * 86400
+    while num_sec > months[month] * SECONDS_IN_DAY:
+        num_sec -= months[month] * SECONDS_IN_DAY
         months[2] = 28
         month += 1
         if month == 2 and leap_check(year):
@@ -188,7 +183,7 @@ def my_datetime(num_sec):
     while num_sec > 0:
         if month == 2 and leap_check(year):
             months[month] = 29
-        last = num_sec//seconds_in_day
+        last = num_sec//SECONDS_IN_DAY
         num_sec = 0
         if last < months[month]:
             day += last
