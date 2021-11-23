@@ -109,17 +109,35 @@ class TestCase(unittest.TestCase):
     def test_conv_endian17(self):
         self.assertEqual(conv_endian(16, 'little'), '10')
 
-    def test_zero(self):
+    def test_datetime0(self):
         self.assertEqual(my_datetime(0), '01-01-1970')
 
-    def test_example1(self):
+    def test_datetime1(self):
         self.assertEqual(my_datetime(123456789), '11-29-1973')
 
-    def test_example2(self):
+    def test_datetime2(self):
         self.assertEqual(my_datetime(9876543210), '12-22-2282')
 
-    def test_example3(self):
+    def test_datetime3(self):
         self.assertEqual(my_datetime(201653971200), '02-29-8360')
+
+    def test_datetime4(self):
+        self.assertEqual(my_datetime(45510215000), '02-29-3412')
+
+    def test_datetime5(self):
+        self.assertEqual(my_datetime(45510305000), '03-01-3412')
+
+    def test_datetime6(self):
+        self.assertEqual(my_datetime(45536601600), '12-31-3412')
+
+    def test_datetime7(self):
+        self.assertEqual(my_datetime(45536687999), '12-31-3412')
+
+    def test_datetime8(self):
+        self.assertEqual(my_datetime(45536688000), '12-31-3412')
+
+    def test_datetime9(self):
+        self.assertEqual(my_datetime(86400), '01-02-1970')
 
 
 if __name__ == '__main__':
