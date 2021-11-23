@@ -94,7 +94,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(my_datetime(45510215000), '02-29-3412')
 
     def test_datetime5(self):
-        self.assertEqual(my_datetime(45510305000 ), '03-01-3412')
+        self.assertEqual(my_datetime(45510305000), '03-01-3412')
 
     def test_datetime6(self):
         self.assertEqual(my_datetime(45536601600), '12-31-3412')
