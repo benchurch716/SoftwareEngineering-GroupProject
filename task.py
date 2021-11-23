@@ -1,5 +1,4 @@
 import string
-import math
 # Function 1 Specification - BEN
 # This function must have the following header: def conv_num(num_str).
 # This function takes in a string and converts it into a base 10 number
@@ -163,30 +162,39 @@ def my_datetime(num_sec):
         7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
     month, day, year = 1, 1, 1970
     seconds_in_day = 86400
-    total_days = math.ceil(num_sec/seconds_in_day)
-    leaps = 0
+    seconds_in_year = 86400*365
+    seconds_in_leap_year = 86400 * 366
 
-    while total_days > 0:
+    month, day, year = 1, 1, 1970
+    seconds_in_day = 86400
+    seconds_in_year = 86400*365
+    seconds_in_leap_year = 86400 * 366
 
-        if month == 2 and year >= 1972 and leap_check(year):
-            months[2] = 29
-            leaps += 1
-        if total_days > months[month]:
-            total_days -= months[month]
-            month += 1
+    while num_sec > seconds_in_year:
+        num_sec -= seconds_in_year
+        year += 1
+        if year >= 1972 and leap_check(year):
+            seconds_in_year = seconds_in_leap_year
+        else:
+            seconds_in_year = 86400*365
 
-            if month > 12:
-                month = 1
-                year += 1
-                months[2] = 28
+    while num_sec > months[month] * 86400:
+        num_sec -= months[month] * 86400
+        months[2] = 28
+        month += 1
+        if month == 2 and leap_check(year):
+            months[month] = 29
 
-        elif total_days + day == months[month] and month == 2:
-            day = int(total_days) + 1
-            total_days = 0
+    while num_sec > 0:
+        if month == 2 and leap_check(year):
+            months[month] = 29
+        last = num_sec//seconds_in_day
+        num_sec = 0
+        if last < months[month]:
+            day += last
+        else:
+            day = months[month]
 
-        elif total_days < months[month]:
-            day = int(total_days)
-            total_days = 0
 
     if month < 10:
         month = '0' + str(month)
