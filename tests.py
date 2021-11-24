@@ -56,6 +56,7 @@ class TestCase(unittest.TestCase):
     def test_int_float(self):
         self.assertEqual(conv_num('123.'), 123.0)
 
+    # Tests for the conv_endian function
     def test_conv_endian1(self):
         self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
 
@@ -77,6 +78,36 @@ class TestCase(unittest.TestCase):
 
     def test_conv_endian7(self):
         self.assertEqual(conv_endian(num=-954786, endian='small'), None)
+
+    def test_conv_endian8(self):
+        self.assertEqual(conv_endian(0), '00')
+
+    def test_conv_endian9(self):
+        self.assertEqual(conv_endian(-0), '00')
+
+    def test_conv_endian10(self):
+        self.assertEqual(conv_endian(0, 'big'), '00')
+
+    def test_conv_endian11(self):
+        self.assertEqual(conv_endian(0, 'little'), '00')
+
+    def test_conv_endian12(self):
+        self.assertEqual(conv_endian(-0), '00')
+
+    def test_conv_endian13(self):
+        self.assertEqual(conv_endian(-1), '-01')
+
+    def test_conv_endian14(self):
+        self.assertEqual(conv_endian(15), '0F')
+
+    def test_conv_endian15(self):
+        self.assertEqual(conv_endian(16), '10')
+
+    def test_conv_endian16(self):
+        self.assertEqual(conv_endian(16, 'big'), '10')
+
+    def test_conv_endian17(self):
+        self.assertEqual(conv_endian(16, 'little'), '10')
 
     def test_datetime0(self):
         self.assertEqual(my_datetime(0), '01-01-1970')
