@@ -108,6 +108,18 @@ class TestCase(unittest.TestCase):
     def test_datetime9(self):
         self.assertEqual(my_datetime(86400), '01-02-1970')
 
+    def test_endian1(self):
+        self.assertEqual(conv_num("99999"), 99999)
+
+    def test_endian2(self):
+        self.assertEqual(conv_num("0x677d"), 26493)
+
+    def test_conv9(self):
+        self.assertEqual(conv_endian(111111, 'big'), '01 B2 07')
+
+    def test_conv10(self):
+        self.assertEqual(conv_endian(000000, 'little'), '00')
+
 
 if __name__ == '__main__':
     unittest.main()
