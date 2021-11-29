@@ -65,7 +65,7 @@ def _validate_float(num_str, isPositive):
         # remove decimal point
         num_str = num_str.replace('.', '')
         # Check for non digits
-        if(num_str.isdigit):
+        if(num_str.isdigit()):
             return True
         else:
             return False
