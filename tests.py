@@ -63,6 +63,93 @@ class TestConvNum(unittest.TestCase):
     def test_conv_num2(self):
         self.assertEqual(conv_num("0x677d"), 26493)
 
+    def test_conv_num3(self):
+        self.assertEqual(conv_num("-a4.109764521"), None)
+
+    def test_conv_num4(self):
+        self.assertEqual(conv_num("5081a45.378"), None)
+
+    def test_conv_num5(self):
+        self.assertEqual(conv_num("-271735569.f9"), None)
+
+    def test_conv_num6(self):
+        self.assertEqual(conv_num("v?-35497.uz64be702"), None)
+
+    def test_conv_num7(self):
+        self.assertEqual(conv_num("d-@22,-;6<2471.2<79"), None)
+
+    def test_conv_num8(self):
+        self.assertEqual(conv_num("~249.8294|143"), None)
+
+    def test_conv_num9(self):
+        self.assertAlmostEqual(conv_num("736.933121"), 736.933121)
+
+
+def gen_convnum_testcases(tests_to_generate=1000):
+    """Generates random tests for the conv_num function. Adds tests
+    to the TestConvNum class."""
+    for _ in range(tests_to_generate):
+        num = random.randint(-4294967295, 4294967295)
+        num_type = random.choice(['hex', 'float', 'int'])
+        valid_test_case = random.choice([True, False])
+
+        if num_type == 'hex':
+            test_case = hex(num)
+        elif num_type == 'float':
+            factor = random.randint(1, 10)
+            num = num / (10 ** factor)
+            test_case = str(num)
+        else:
+            test_case = str(num)
+
+        if valid_test_case:
+            expected = num
+        else:
+            expected = None
+            sym = (32, 45)
+            sym2 = (58, 64)
+            sym3 = (91, 96)
+            sym4 = (122, 126)
+            period = (46, 46)
+            lc_a_f = (97, 102)
+            lc_g_z = (103, 122)
+
+            invalid_count = random.randint(1, 10)
+
+            if num_type == 'hex':
+                choices = [sym, sym2, sym3, sym4, period, lc_g_z]
+            elif num_type == 'float':
+                choices = [sym, sym2, sym3, sym4, period, lc_a_f, lc_g_z]
+            else:
+                choices = [sym, sym2, sym3, sym4, lc_a_f, lc_g_z]
+
+            for _ in range(invalid_count):
+                chr_range = random.choice(choices)
+                chr_val = random.randint(chr_range[0], chr_range[1])
+                # splice invalid char into string
+                pos = random.randint(0, len(test_case))
+                test_case = test_case[:pos] + chr(chr_val) + test_case[pos:]
+
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_cn_test_func(expected, test_case, conv_num,
+                                      message, num_type)
+        setattr(TestConvNum, 'test_{}'.format(test_case), new_test)
+
+
+def build_cn_test_func(expected, test_case, func_under_test,
+                       message, num_type):
+    """Test builder function for the conv_num function."""
+    def test(self):
+        result = func_under_test(test_case)
+        if num_type == 'float':
+            self.assertAlmostEqual(expected, result, 7,
+                                   message.format(test_case, expected, result))
+        else:
+            self.assertEqual(expected, result,
+                             message.format(test_case, expected, result))
+    return test
+
 
 class TestConvEndian(unittest.TestCase):
     # Tests for conv_endian():
@@ -179,8 +266,21 @@ def gen_convendian_testcases(tests_to_generate=1000):
 
         # Build test function
         message = 'Test case: {}, Expected: {}, Result: {}'
-        new_test = build_test_func(expected, test_case, conv_endian, message)
+        new_test = build_ce_test_func(expected,
+                                      test_case,
+                                      conv_endian,
+                                      message)
         setattr(TestConvEndian, 'test_{}'.format(test_case), new_test)
+
+
+def build_ce_test_func(expected, test_case, func_under_test, message):
+    """Test builder function for the conv_endian function."""
+    def test(self):
+        result = func_under_test(*test_case)
+        self.assertEqual(expected,
+                         result,
+                         message.format(test_case, expected, result))
+    return test
 
 
 class TestMyDateTime(unittest.TestCase):
@@ -216,17 +316,7 @@ class TestMyDateTime(unittest.TestCase):
         self.assertEqual(my_datetime(86400), '01-02-1970')
 
 
-def build_test_func(expected, test_case, func_under_test, message):
-    """Generic test builder function using assertEqual. test_case
-    can be a single argument or multiple arguments as tuple."""
-    def test(self):
-        result = func_under_test(*test_case)
-        self.assertEqual(expected,
-                         result,
-                         message.format(test_case, expected, result))
-    return test
-
-
 if __name__ == '__main__':
+    gen_convnum_testcases(1000)
     gen_convendian_testcases(1000)
     unittest.main()
