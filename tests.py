@@ -57,6 +57,12 @@ class TestConvNum(unittest.TestCase):
     def test_int_float(self):
         self.assertEqual(conv_num('123.'), 123.0)
 
+    def test_conv_num1(self):
+        self.assertEqual(conv_num("99999"), 99999)
+
+    def test_conv_num2(self):
+        self.assertEqual(conv_num("0x677d"), 26493)
+
 
 class TestConvEndian(unittest.TestCase):
     # Tests for conv_endian():
@@ -208,12 +214,6 @@ class TestMyDateTime(unittest.TestCase):
 
     def test_datetime9(self):
         self.assertEqual(my_datetime(86400), '01-02-1970')
-
-    def test_conv_num1(self):
-        self.assertEqual(conv_num("99999"), 99999)
-
-    def test_conv_num2(self):
-        self.assertEqual(conv_num("0x677d"), 26493)
 
 
 def build_test_func(expected, test_case, func_under_test, message):
