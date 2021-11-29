@@ -136,6 +136,12 @@ class TestConvEndian(unittest.TestCase):
     def test_conv_endian25(self):
         self.assertEqual(conv_endian(2659857920, 'little'), '00 36 8A 9E')
 
+    def test_conv_endian26(self):
+        self.assertEqual(conv_endian(111111, 'big'), '01 B2 07')
+
+    def test_conv_endian27(self):
+        self.assertEqual(conv_endian(000000, 'little'), '00')
+
 
 def gen_convendian_testcases(tests_to_generate=1000):
     """Generates random tests for the conv_endian function. Adds tests
@@ -208,12 +214,6 @@ class TestMyDateTime(unittest.TestCase):
 
     def test_conv_num2(self):
         self.assertEqual(conv_num("0x677d"), 26493)
-
-    def test_conv_endian18(self):
-        self.assertEqual(conv_endian(111111, 'big'), '01 B2 07')
-
-    def test_conv_endian19(self):
-        self.assertEqual(conv_endian(000000, 'little'), '00')
 
 
 def build_test_func(expected, test_case, func_under_test, message):
