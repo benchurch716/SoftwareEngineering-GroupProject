@@ -1,8 +1,9 @@
 import unittest
+import random
 from task import conv_num, my_datetime, conv_endian
 
 
-class TestCase(unittest.TestCase):
+class TestConvNum(unittest.TestCase):
     # Tests for conv_num():
     # reject an empty string
     def test_empty_string(self):
@@ -56,7 +57,9 @@ class TestCase(unittest.TestCase):
     def test_int_float(self):
         self.assertEqual(conv_num('123.'), 123.0)
 
-    # Tests for the conv_endian function
+
+class TestConvEndian(unittest.TestCase):
+    # Tests for conv_endian():
     def test_conv_endian1(self):
         self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
 
@@ -109,6 +112,67 @@ class TestCase(unittest.TestCase):
     def test_conv_endian17(self):
         self.assertEqual(conv_endian(16, 'little'), '10')
 
+    def test_conv_endian18(self):
+        self.assertEqual(conv_endian(16, 'BIG'), None)
+
+    def test_conv_endian19(self):
+        self.assertEqual(conv_endian(1000000), '0F 42 40')
+
+    def test_conv_endian20(self):
+        self.assertEqual(conv_endian(4294967295), 'FF FF FF FF')
+
+    def test_conv_endian21(self):
+        self.assertEqual(conv_endian(4294967295, 'little'), 'FF FF FF FF')
+
+    def test_conv_endian22(self):
+        self.assertEqual(conv_endian(-4294967295), '-FF FF FF FF')
+
+    def test_conv_endian23(self):
+        self.assertEqual(conv_endian(4294967294), 'FF FF FF FE')
+
+    def test_conv_endian24(self):
+        self.assertEqual(conv_endian(4294967294, 'little'), 'FE FF FF FF')
+
+    def test_conv_endian25(self):
+        self.assertEqual(conv_endian(2659857920, 'little'), '00 36 8A 9E')
+
+
+def gen_convendian_testcases(tests_to_generate=1000):
+    """Generates random tests for the conv_endian function. Adds tests
+    to the TestConvEndian class."""
+    for _ in range(tests_to_generate):
+        num = random.randint(-4294967295, 4294967295)
+        endian = random.choice(['big', 'little'])
+        hex_raw = hex(abs(num))[2:].upper()
+        hex_arr = []
+        test_case = num, endian
+
+        # Convert the raw hex string to the expected output
+        if len(hex_raw) % 2 == 1:
+            hex_arr.append('0' + hex_raw[0])
+            start = 1
+        else:
+            start = 0
+
+        for i in range(start, len(hex_raw), 2):
+            hex_arr.append(hex_raw[i:i+2])
+
+        if endian == 'little':
+            hex_arr.reverse()
+
+        expected = " ".join(hex_arr)
+
+        if num < 0:
+            expected = '-' + expected
+
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func(expected, test_case, conv_endian, message)
+        setattr(TestConvEndian, 'test_{}'.format(test_case), new_test)
+
+
+class TestMyDateTime(unittest.TestCase):
+    # Tests for my_datetime():
     def test_datetime0(self):
         self.assertEqual(my_datetime(0), '01-01-1970')
 
@@ -140,5 +204,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(my_datetime(86400), '01-02-1970')
 
 
+def build_test_func(expected, test_case, func_under_test, message):
+    """Generic test builder function using assertEqual. test_case
+    can be a single argument or multiple arguments as tuple."""
+    def test(self):
+        result = func_under_test(*test_case)
+        self.assertEqual(expected,
+                         result,
+                         message.format(test_case, expected, result))
+    return test
+
+
 if __name__ == '__main__':
+    gen_convendian_testcases(1000)
     unittest.main()
