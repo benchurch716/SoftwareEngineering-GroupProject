@@ -107,22 +107,28 @@ def gen_convnum_testcases(tests_to_generate=1000):
             expected = num
         else:
             expected = None
+            # ASCII character value ranges. These are split up
+            # to avoid including numbers
             sym = (32, 45)
             sym2 = (58, 64)
             sym3 = (91, 96)
             sym4 = (122, 126)
             period = (46, 46)
-            lc_a_f = (97, 102)
-            lc_g_z = (103, 122)
+            # a-f and g-z are separated to allow invalid alphanumeric
+            # characters to be included in different types of test
+            # cases (hex, int, float)
+            lowercase_a_f = (97, 102)
+            lowercase_g_z = (103, 122)
 
             invalid_count = random.randint(1, 10)
 
             if num_type == 'hex':
-                choices = [sym, sym2, sym3, sym4, period, lc_g_z]
+                choices = [sym, sym2, sym3, sym4, period, lowercase_g_z]
             elif num_type == 'float':
-                choices = [sym, sym2, sym3, sym4, period, lc_a_f, lc_g_z]
+                choices = [sym, sym2, sym3, sym4, period, lowercase_a_f,
+                           lowercase_g_z]
             else:
-                choices = [sym, sym2, sym3, sym4, lc_a_f, lc_g_z]
+                choices = [sym, sym2, sym3, sym4, lowercase_a_f, lowercase_g_z]
 
             for _ in range(invalid_count):
                 chr_range = random.choice(choices)
