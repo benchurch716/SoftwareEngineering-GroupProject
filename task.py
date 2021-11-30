@@ -65,7 +65,7 @@ def _validate_float(num_str, isPositive):
         # remove decimal point
         num_str = num_str.replace('.', '')
         # Check for non digits
-        if(num_str.isdigit):
+        if(num_str.isdigit()):
             return True
         else:
             return False
@@ -228,6 +228,7 @@ def leap_check(year):
 
 
 def conv_endian(num, endian='big'):
+    MAX_HEX_VALUE = 15
     if endian != 'big' and endian != 'little':
         return None
     bt_vals = []
@@ -244,7 +245,7 @@ def conv_endian(num, endian='big'):
         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
 
     # extract hex values from num and store in a list of bytes
-    while num > 15:
+    while num > MAX_HEX_VALUE:
         rem = num % 16  # get remainder to map to hex
         num = num // 16
         hex = hex_map[rem]

@@ -1,8 +1,10 @@
 import unittest
+import random
+import datetime
 from task import conv_num, my_datetime, conv_endian
 
 
-class TestCase(unittest.TestCase):
+class TestConvNum(unittest.TestCase):
     # Tests for conv_num():
     # reject an empty string
     def test_empty_string(self):
@@ -56,7 +58,108 @@ class TestCase(unittest.TestCase):
     def test_int_float(self):
         self.assertEqual(conv_num('123.'), 123.0)
 
-    # Tests for the conv_endian function
+    def test_conv_num1(self):
+        self.assertEqual(conv_num("99999"), 99999)
+
+    def test_conv_num2(self):
+        self.assertEqual(conv_num("0x677d"), 26493)
+
+    def test_conv_num3(self):
+        self.assertEqual(conv_num("-a4.109764521"), None)
+
+    def test_conv_num4(self):
+        self.assertEqual(conv_num("5081a45.378"), None)
+
+    def test_conv_num5(self):
+        self.assertEqual(conv_num("-271735569.f9"), None)
+
+    def test_conv_num6(self):
+        self.assertEqual(conv_num("v?-35497.uz64be702"), None)
+
+    def test_conv_num7(self):
+        self.assertEqual(conv_num("d-@22,-;6<2471.2<79"), None)
+
+    def test_conv_num8(self):
+        self.assertEqual(conv_num("~249.8294|143"), None)
+
+    def test_conv_num9(self):
+        self.assertAlmostEqual(conv_num("736.933121"), 736.933121)
+
+
+def gen_convnum_testcases(tests_to_generate=1000):
+    """Generates random tests for the conv_num function. Adds tests
+    to the TestConvNum class."""
+    for _ in range(tests_to_generate):
+        num = random.randint(-4294967295, 4294967295)
+        num_type = random.choice(['hex', 'float', 'int'])
+        valid_test_case = random.choice([True, False])
+
+        if num_type == 'hex':
+            test_case = hex(num)
+        elif num_type == 'float':
+            factor = random.randint(1, 10)
+            num = num / (10 ** factor)
+            test_case = str(num)
+        else:
+            test_case = str(num)
+
+        if valid_test_case:
+            expected = num
+        else:
+            expected = None
+            # ASCII character value ranges. These are split up
+            # to avoid including numbers
+            sym = (32, 45)
+            sym2 = (58, 64)
+            sym3 = (91, 96)
+            sym4 = (122, 126)
+            period = (46, 46)
+            # a-f and g-z are separated to allow invalid alphanumeric
+            # characters to be included in different types of test
+            # cases (hex, int, float)
+            lowercase_a_f = (97, 102)
+            lowercase_g_z = (103, 122)
+
+            invalid_count = random.randint(1, 10)
+
+            if num_type == 'hex':
+                choices = [sym, sym2, sym3, sym4, period, lowercase_g_z]
+            elif num_type == 'float':
+                choices = [sym, sym2, sym3, sym4, period, lowercase_a_f,
+                           lowercase_g_z]
+            else:
+                choices = [sym, sym2, sym3, sym4, lowercase_a_f, lowercase_g_z]
+
+            for _ in range(invalid_count):
+                chr_range = random.choice(choices)
+                chr_val = random.randint(chr_range[0], chr_range[1])
+                # splice invalid char into string
+                pos = random.randint(0, len(test_case))
+                test_case = test_case[:pos] + chr(chr_val) + test_case[pos:]
+
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_cn_test_func(expected, test_case, conv_num,
+                                      message, num_type)
+        setattr(TestConvNum, 'test_{}'.format(test_case), new_test)
+
+
+def build_cn_test_func(expected, test_case, func_under_test,
+                       message, num_type):
+    """Test builder function for the conv_num function."""
+    def test(self):
+        result = func_under_test(test_case)
+        if num_type == 'float':
+            self.assertAlmostEqual(expected, result, 7,
+                                   message.format(test_case, expected, result))
+        else:
+            self.assertEqual(expected, result,
+                             message.format(test_case, expected, result))
+    return test
+
+
+class TestConvEndian(unittest.TestCase):
+    # Tests for conv_endian():
     def test_conv_endian1(self):
         self.assertEqual(conv_endian(954786, 'big'), '0E 91 A2')
 
@@ -109,6 +212,86 @@ class TestCase(unittest.TestCase):
     def test_conv_endian17(self):
         self.assertEqual(conv_endian(16, 'little'), '10')
 
+    def test_conv_endian18(self):
+        self.assertEqual(conv_endian(16, 'BIG'), None)
+
+    def test_conv_endian19(self):
+        self.assertEqual(conv_endian(1000000), '0F 42 40')
+
+    def test_conv_endian20(self):
+        self.assertEqual(conv_endian(4294967295), 'FF FF FF FF')
+
+    def test_conv_endian21(self):
+        self.assertEqual(conv_endian(4294967295, 'little'), 'FF FF FF FF')
+
+    def test_conv_endian22(self):
+        self.assertEqual(conv_endian(-4294967295), '-FF FF FF FF')
+
+    def test_conv_endian23(self):
+        self.assertEqual(conv_endian(4294967294), 'FF FF FF FE')
+
+    def test_conv_endian24(self):
+        self.assertEqual(conv_endian(4294967294, 'little'), 'FE FF FF FF')
+
+    def test_conv_endian25(self):
+        self.assertEqual(conv_endian(2659857920, 'little'), '00 36 8A 9E')
+
+    def test_conv_endian26(self):
+        self.assertEqual(conv_endian(111111, 'big'), '01 B2 07')
+
+    def test_conv_endian27(self):
+        self.assertEqual(conv_endian(000000, 'little'), '00')
+
+
+def gen_convendian_testcases(tests_to_generate=1000):
+    """Generates random tests for the conv_endian function. Adds tests
+    to the TestConvEndian class."""
+    for _ in range(tests_to_generate):
+        num = random.randint(-4294967295, 4294967295)
+        endian = random.choice(['big', 'little'])
+        hex_raw = hex(abs(num))[2:].upper()
+        hex_arr = []
+        test_case = num, endian
+
+        # Convert the raw hex string to the expected output
+        if len(hex_raw) % 2 == 1:
+            hex_arr.append('0' + hex_raw[0])
+            start = 1
+        else:
+            start = 0
+
+        for i in range(start, len(hex_raw), 2):
+            hex_arr.append(hex_raw[i:i+2])
+
+        if endian == 'little':
+            hex_arr.reverse()
+
+        expected = " ".join(hex_arr)
+
+        if num < 0:
+            expected = '-' + expected
+
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_ce_test_func(expected,
+                                      test_case,
+                                      conv_endian,
+                                      message)
+        setattr(TestConvEndian, 'test_{}'.format(test_case), new_test)
+
+
+def build_ce_test_func(expected, test_case, func_under_test, message):
+    """Test builder function for the conv_endian function."""
+    def test(self):
+        result = func_under_test(*test_case)
+        self.assertEqual(expected,
+                         result,
+                         message.format(test_case, expected, result))
+    return test
+
+
+class TestMyDateTime(unittest.TestCase):
+    # Tests for my_datetime():
     def test_datetime0(self):
         self.assertEqual(my_datetime(0), '01-01-1970')
 
@@ -139,18 +322,36 @@ class TestCase(unittest.TestCase):
     def test_datetime9(self):
         self.assertEqual(my_datetime(86400), '01-02-1970')
 
-    def test_conv_num1(self):
-        self.assertEqual(conv_num("99999"), 99999)
 
-    def test_conv_num2(self):
-        self.assertEqual(conv_num("0x677d"), 26493)
+def gen_mydatetime_testcases(tests_to_generate=1000):
+    """Generates random tests for the my_datetime function. Adds tests
+    to the TestMyDateTime class."""
+    for _ in range(tests_to_generate):
+        test_case = random.randint(0, 201653971200)
+        expected = datetime.datetime.utcfromtimestamp(test_case)
+        expected = expected.strftime('%m-%d-%Y')
 
-    def test_conv_endian18(self):
-        self.assertEqual(conv_endian(111111, 'big'), '01 B2 07')
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_mdt_test_func(expected,
+                                       test_case,
+                                       my_datetime,
+                                       message)
+        setattr(TestMyDateTime, 'test_{}'.format(test_case), new_test)
 
-    def test_conv_endian19(self):
-        self.assertEqual(conv_endian(000000, 'little'), '00')
+
+def build_mdt_test_func(expected, test_case, func_under_test, message):
+    """Test builder function for the conv_endian function."""
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected,
+                         result,
+                         message.format(test_case, expected, result))
+    return test
 
 
 if __name__ == '__main__':
+    gen_convnum_testcases(1000)
+    gen_mydatetime_testcases(1000)
+    gen_convendian_testcases(1000)
     unittest.main()
