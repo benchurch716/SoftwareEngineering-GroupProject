@@ -33,11 +33,8 @@ def _map_char_value(digit):
     return values[digit.upper()]
 
 
-def _validate_int(num_str, isPositive):
-    if num_str.isdigit():
-        return True
-    else:
-        return False
+def _validate_int(num_str):
+    return num_str.isdigit()
 
 
 def _convert_int(num_str, isPositive):
@@ -53,7 +50,7 @@ def _convert_int(num_str, isPositive):
         return result * -1
 
 
-def _validate_float(num_str, isPositive):
+def _validate_float(num_str):
     # check for more than 1 decimal places
     decimal_counter = 0
     for char in num_str:
@@ -92,7 +89,7 @@ def _convert_float(num_str, isPositive):
         return result * -1
 
 
-def _validate_hex(num_str, isPositive):
+def _validate_hex(num_str):
     if "0x" in num_str:
         # check for non hex letters after the "0x"
         if all(char in string.hexdigits for char in num_str[2:]):
@@ -131,13 +128,13 @@ def conv_num(num_str):
         isPositive = False
         num_str = num_str[1:]
     # check for int
-    if(_validate_int(num_str, isPositive)):
+    if(_validate_int(num_str)):
         return _convert_int(num_str, isPositive)
     # check for Float
-    if(_validate_float(num_str, isPositive)):
+    if(_validate_float(num_str)):
         return _convert_float(num_str, isPositive)
     # check for Hex
-    if(_validate_hex(num_str, isPositive)):
+    if(_validate_hex(num_str)):
         return _convert_hex(num_str, isPositive)
     return None
 
