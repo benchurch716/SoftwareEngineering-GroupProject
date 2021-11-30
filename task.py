@@ -34,10 +34,7 @@ def _map_char_value(digit):
 
 
 def _validate_int(num_str):
-    if num_str.isdigit():
-        return True
-    else:
-        return False
+    return num_str.isdigit()
 
 
 def _convert_int(num_str, isPositive):
