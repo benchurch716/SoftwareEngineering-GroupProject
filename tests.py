@@ -1,5 +1,6 @@
 import unittest
 import random
+import datetime
 from task import conv_num, my_datetime, conv_endian
 
 
@@ -316,7 +317,35 @@ class TestMyDateTime(unittest.TestCase):
         self.assertEqual(my_datetime(86400), '01-02-1970')
 
 
+def gen_mydatetime_testcases(tests_to_generate=1000):
+    """Generates random tests for the my_datetime function. Adds tests
+    to the TestMyDateTime class."""
+    for _ in range(tests_to_generate):
+        test_case = random.randint(0, 201653971200)
+        expected = datetime.datetime.utcfromtimestamp(test_case)
+        expected = expected.strftime('%m-%d-%Y')
+
+        # Build test function
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_mdt_test_func(expected,
+                                       test_case,
+                                       my_datetime,
+                                       message)
+        setattr(TestMyDateTime, 'test_{}'.format(test_case), new_test)
+
+
+def build_mdt_test_func(expected, test_case, func_under_test, message):
+    """Test builder function for the conv_endian function."""
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected,
+                         result,
+                         message.format(test_case, expected, result))
+    return test
+
+
 if __name__ == '__main__':
     gen_convnum_testcases(1000)
+    gen_mydatetime_testcases(1000)
     gen_convendian_testcases(1000)
     unittest.main()
